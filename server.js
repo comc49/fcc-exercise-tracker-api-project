@@ -46,3 +46,26 @@ app.use((err, req, res, next) => {
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
+
+var userSchema = mongoose.Schema({
+  username: String,
+  exercises: [
+    exercise: {
+      description: String,
+      duration: Number,
+      date: Date,
+    }
+  ]
+});
+
+app.post('/api/exercise/new-user', function(req,res) {
+  req.body.username
+});
+
+app.post('/api/exercise/add', function(req,res) {
+  
+});
+///api/exercise/log?{userId}[&from][&to][&limit]
+app.get('/api/exercise/log', function(req,res) {
+  
+});
