@@ -35,8 +35,7 @@ var exerciseSchema = mongoose.Schema({
 });
 
 var userModel = mongoose.model('user',userSchema);
-var exerciseModel = mongoose.model('exercise',userSchema);
-
+var exerciseModel = mongoose.model('exercise',exerciseSchema);
 
 app.post('/api/exercise/new-user', function(req,res) {
   var p = userModel.create({username: req.body.username},(err,doc) => {
@@ -56,35 +55,28 @@ app.post('/api/exercise/add', function(req,res) {
   },
   (err, exercise) => {
     if (err) {
-      
+          console.log(err,'err');
     }
     //{"username":"sdfasdfsaf","description":"sup","duration":10,"_id":"H1aV5n_V7","date":"Sun Oct 10 2010"}
-      console.log(JSON.stringify(exercise)); 
+    console.log(exercise,'cmon');
+      res.send({ description: exercise.description, duration: exercise.duration, _id: exercise.id, date: exercise.date});
     });
   });
 ///api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', function(req,res) {
   console.log(req.query);
   //let queryBuilder = userModel.findById(req.query.userId).where('exercises.1.description');
-  let queryBuilder = userModel.find({'exercises.duration': {$lte:40}});
- 
+  let queryBuilder = exerciseModel.findById(req.query.userId);  
   
-//     queryBuilder = queryBuilder.where('exercises').elemMatch(function(elem) {
-//       elem.where({duration: 30});
-//     });
-     //queryBuilder = queryBuilder.where('exercises.duration').equals(30);
-  
-  
-//   if (req.query.from) {
-//     queryBuilder = queryBuilder.where('exercises.date').gte(new Date(req.query.from));
-//   }
-//   if (req.query.to) {
-//     queryBuilder = queryBuilder.where('date').lte(new Date(req.query.to));
-//   }
-  
-//   if (req.query.limit) {
-//     queryBuilder = queryBuilder.limit(req.query.limit);
-//   }
+  if (req.query.from) {
+    queryBuilder = queryBuilder.where('date').gte(new Date(req.query.from));
+  }
+  if (req.query.to) {
+    queryBuilder = queryBuilder.where('date').lte(new Date(req.query.to));
+  }
+  if (req.query.limit) {
+    queryBuilder = queryBuilder.limit(req.query.limit);
+  }
   queryBuilder.exec((err,doc) => {
     if (err) console.log(err);
     if(!doc) console.log("DOC I NULL");
