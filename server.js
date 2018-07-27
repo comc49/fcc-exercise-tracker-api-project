@@ -72,7 +72,7 @@ app.get('/api/exercise/log', function(req,res) {
   
   if (req.query.test) {
     console.log("INSIDE TEST");
-    queryBuilder = queryBuilder.where('exercises.test').gte(4);
+    queryBuilder = queryBuilder.where('exercises').where('test');
   }  
 //   if (req.query.from) {
 //     queryBuilder = queryBuilder.where('exercises.date').gte(new Date(req.query.from));
@@ -86,7 +86,7 @@ app.get('/api/exercise/log', function(req,res) {
 //   }
   queryBuilder.exec((err,doc) => {
     if (err) console.log(err);
-    //console.log("WHAT",doc);
+    if(!doc) console.log("DOC I NULL");
     console.log("HELLO???");
     res.send(doc);
   });
