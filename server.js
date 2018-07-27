@@ -66,16 +66,25 @@ app.post('/api/exercise/add', function(req,res) {
   });
 ///api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', function(req,res) {
-  
-  let queryBuilder = userModel.findById(req.params.userId);
-  if (req.params.from) {
-    queryBuilder = queryBuilder
+  console.log(req.query);
+  let queryBuilder = userModel.findById(req.query.userId);
+  if (req.query.from) {
+    queryBuilder = queryBuilder.where('date').gte(new Date(req.query.from));
   }
   
-  userModel.find({
-    
-  })
+  if (req.query.to) {
+    queryBuilder = queryBuilder.where('date').lte(new Date(req.query.to));
+  }
   
+  if (req.query.limit) {
+    queryBuilder = queryBuilder.limit(req.query.limit);
+  }
+  console.log("HELLO???");
+  queryBuilder.exec((err,doc) => {
+    if (err) console.log(err);
+    console.log("WHAT",doc);
+    res.send(doc);
+  });
 });
 
 // Not found middleware
