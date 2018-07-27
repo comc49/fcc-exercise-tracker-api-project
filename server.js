@@ -58,15 +58,17 @@ app.post('/api/exercise/add', function(req,res) {
           console.log(err,'err');
     }
     //{"username":"sdfasdfsaf","description":"sup","duration":10,"_id":"H1aV5n_V7","date":"Sun Oct 10 2010"}
-    console.log(exercise,'cmon');
-      res.send({ description: exercise.description, duration: exercise.duration, _id: exercise.id, date: exercise.date});
+      res.send({ 
+        description: exercise.description,
+        duration: exercise.duration,
+        _id: exercise.id,
+        date: exercise.date
+      });
     });
   });
 ///api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', function(req,res) {
-  console.log(req.query);
-  //let queryBuilder = userModel.findById(req.query.userId).where('exercises.1.description');
-  let queryBuilder = exerciseModel.findById(req.query.userId);  
+  let queryBuilder = exerciseModel.find().where('userId').equals(req.query.userId);  
   
   if (req.query.from) {
     queryBuilder = queryBuilder.where('date').gte(new Date(req.query.from));
@@ -75,12 +77,10 @@ app.get('/api/exercise/log', function(req,res) {
     queryBuilder = queryBuilder.where('date').lte(new Date(req.query.to));
   }
   if (req.query.limit) {
-    queryBuilder = queryBuilder.limit(req.query.limit);
+    queryBuilder = queryBuilder.limit(Number(req.query.limit));
   }
   queryBuilder.exec((err,doc) => {
     if (err) console.log(err);
-    if(!doc) console.log("DOC I NULL");
-    console.log(doc,"HELLO???");
     res.send(doc);
   });
 });
