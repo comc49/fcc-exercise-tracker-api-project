@@ -22,17 +22,21 @@ function validateDate(date) {
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
+
 var userSchema = mongoose.Schema({
   username: { type:String, unique: true },
-  exercises: [{
-      description: { type: String, required: true },
-      duration: { type: Number, required: true },
-      date: { type: Date, validate: validateDate }
-    }
-  ]
+});
+
+var exerciseSchema = mongoose.Schema({
+    userId: { type: String, required: true },
+    description: { type: String, required: true },
+    duration: { type: Number, required: true },
+    date: { type: Date, validate: validateDate },
 });
 
 var userModel = mongoose.model('user',userSchema);
+var exerciseModel = mongoose.model('exercise',userSchema);
+
 
 app.post('/api/exercise/new-user', function(req,res) {
   var p = userModel.create({username: req.body.username},(err,doc) => {
@@ -42,26 +46,20 @@ app.post('/api/exercise/new-user', function(req,res) {
 });
 
 app.post('/api/exercise/add', function(req,res) {
-  userModel.findByIdAndUpdate(req.body.userId,
+  console.log(req.body,'body');
+  exerciseModel.create(
   {
-    $push:
-      { 
-        "exercises": {
-        description: req.body.description,
-        duration: req.body.duration,
-        date: req.body.date
-        }
-      }
+    userId: req.body.userId,
+    description: req.body.description,
+    duration: req.body.duration,
+    date: req.body.date,
   },
-  {
-    new: true
-  },
-  (err, user) => {
+  (err, exercise) => {
     if (err) {
       
     }
     //{"username":"sdfasdfsaf","description":"sup","duration":10,"_id":"H1aV5n_V7","date":"Sun Oct 10 2010"}
-      console.log(JSON.stringify(user),'user'); 
+      console.log(JSON.stringify(exercise)); 
     });
   });
 ///api/exercise/log?{userId}[&from][&to][&limit]
