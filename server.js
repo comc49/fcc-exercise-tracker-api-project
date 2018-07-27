@@ -31,22 +31,26 @@ var userSchema = mongoose.Schema({
 var userModel = mongoose.model('user',userSchema);
 
 app.post('/api/exercise/new-user', function(req,res) {
-  var p = userModel.create({username: req.body.username});
-  p.then((err,doc) => {
+  var p = userModel.create({username: req.body.username},(err,doc) => {
     res.send({doc});
+    console.log(doc);
   });
 });
 
 app.post('/api/exercise/add', function(req,res) {
-  userModel.findByIdAndUpdate(req.body.userId, { }(err, user) => {
-    
+  userModel.findByIdAndUpdate(req.body.userId,{$push:
+  { 
+    "exercises": {
+    description: req.body.description,
+    duration: req.body.duration,
+    date: req.body.date
+    }
+  }
+  }, {new: true},
+    (err, user) => {
+    console.log(user,'user');
     
   });
-  req.body.userId
-  req.body.description
-  req.body.duration
-  req.body.date
-
   
   console.log("HI");
 });
