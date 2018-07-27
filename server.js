@@ -17,7 +17,43 @@ app.use(express.static('public'))
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
+var userSchema = mongoose.Schema({
+  username: String,
+  exercises: [{
+    exercise: {
+      description: String,
+      duration: Number,
+      date: Date,
+    }
+  }]
+});
 
+var userModel = mongoose.model('user',userSchema);
+
+app.post('/api/exercise/new-user', function(req,res) {
+  var p = userModel.create({username: req.body.username});
+  p.then((err,doc) => {
+    res.send({doc});
+  });
+});
+
+app.post('/api/exercise/add', function(req,res) {
+  userModel.findByIdAndUpdate(req.body.userId, { }(err, user) => {
+    
+    
+  });
+  req.body.userId
+  req.body.description
+  req.body.duration
+  req.body.date
+
+  
+  console.log("HI");
+});
+///api/exercise/log?{userId}[&from][&to][&limit]
+app.get('/api/exercise/log', function(req,res) {
+  
+});
 
 // Not found middleware
 app.use((req, res, next) => {
@@ -47,31 +83,3 @@ const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
 
-var userSchema = mongoose.Schema({
-  username: String,
-  exercises: [{
-    exercise: {
-      description: String,
-      duration: Number,
-      date: Date,
-    }
-  }]
-});
-
-var userModel = mongoose.model('user',userSchema);
-
-app.post('/api/exercise/new-user', function(req,res) {
-  console.log("SUP");
-  var p = userModel.create({username: req.body.username});
-  p.then((err,doc) => {
-    res.send({doc});
-  });
-});
-
-app.post('/api/exercise/add', function(req,res) {
-  console.log("HI");
-});
-///api/exercise/log?{userId}[&from][&to][&limit]
-app.get('/api/exercise/log', function(req,res) {
-  
-});
