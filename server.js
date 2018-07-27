@@ -68,25 +68,26 @@ app.post('/api/exercise/add', function(req,res) {
 app.get('/api/exercise/log', function(req,res) {
   console.log(req.query);
   let queryBuilder = userModel.findById(req.query.userId);
-  if (req.query.from) {
-    queryBuilder = queryBuilder.where('exercises.date').gte(new Date(req.query.from));
-  }
+ 
   
   if (req.query.test) {
-    queryBuilder = queryBuilder.where('this.exercises.test').gte('5');
-  }
+    console.log("INSIDE TEST");
+    queryBuilder = queryBuilder.where('exercises.test').gte(4);
+  }  
+//   if (req.query.from) {
+//     queryBuilder = queryBuilder.where('exercises.date').gte(new Date(req.query.from));
+//   }
+//   if (req.query.to) {
+//     queryBuilder = queryBuilder.where('date').lte(new Date(req.query.to));
+//   }
   
-  if (req.query.to) {
-    queryBuilder = queryBuilder.where('date').lte(new Date(req.query.to));
-  }
-  
-  if (req.query.limit) {
-    queryBuilder = queryBuilder.limit(req.query.limit);
-  }
-  console.log("HELLO???");
+//   if (req.query.limit) {
+//     queryBuilder = queryBuilder.limit(req.query.limit);
+//   }
   queryBuilder.exec((err,doc) => {
     if (err) console.log(err);
-    console.log("WHAT",doc);
+    //console.log("WHAT",doc);
+    console.log("HELLO???");
     res.send(doc);
   });
 });
