@@ -49,17 +49,22 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 
 var userSchema = mongoose.Schema({
   username: String,
-  exercises: [
+  exercises: [{
     exercise: {
       description: String,
       duration: Number,
       date: Date,
     }
-  ]
+  }]
 });
 
+var userModel = mongoose.model('user',userSchema);
+
 app.post('/api/exercise/new-user', function(req,res) {
-  req.body.username
+  var p = userModel.create({username: req.body.username});
+  p.then((err,doc) => {
+    res.send({doc});
+  });
 });
 
 app.post('/api/exercise/add', function(req,res) {
