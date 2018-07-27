@@ -52,12 +52,13 @@ app.post('/api/exercise/add', function(req,res) {
   }
   }, {new: true},
     (err, user) => {
+      if (err) {
+        
+      }
     console.log(JSON.stringify(user),'user');
     
   });
-  
-  console.log("HI");
-});
+  });
 ///api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', function(req,res) {
   
