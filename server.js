@@ -61,6 +61,7 @@ var userSchema = mongoose.Schema({
 var userModel = mongoose.model('user',userSchema);
 
 app.post('/api/exercise/new-user', function(req,res) {
+  console.log("SUP");
   var p = userModel.create({username: req.body.username});
   p.then((err,doc) => {
     res.send({doc});
@@ -68,7 +69,7 @@ app.post('/api/exercise/new-user', function(req,res) {
 });
 
 app.post('/api/exercise/add', function(req,res) {
-  
+  console.log("HI");
 });
 ///api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', function(req,res) {
