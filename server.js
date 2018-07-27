@@ -42,22 +42,27 @@ app.post('/api/exercise/new-user', function(req,res) {
 });
 
 app.post('/api/exercise/add', function(req,res) {
-  userModel.findByIdAndUpdate(req.body.userId,{$push:
-  { 
-    "exercises": {
-    description: req.body.description,
-    duration: req.body.duration,
-    date: req.body.date
-    }
-  }
-  }, {new: true},
-    (err, user) => {
-      if (err) {
-        
+  userModel.findByIdAndUpdate(req.body.userId,
+  {
+    $push:
+      { 
+        "exercises": {
+        description: req.body.description,
+        duration: req.body.duration,
+        date: req.body.date
+        }
       }
-    console.log(JSON.stringify(user),'user');
-    
-  });
+  },
+  {
+    new: true
+  },
+  (err, user) => {
+    if (err) {
+      
+    }
+    //{"username":"sdfasdfsaf","description":"sup","duration":10,"_id":"H1aV5n_V7","date":"Sun Oct 10 2010"}
+      console.log(JSON.stringify(user),'user'); 
+    });
   });
 ///api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', function(req,res) {
