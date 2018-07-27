@@ -14,25 +14,29 @@ app.use(bodyParser.json())
 
 
 app.use(express.static('public'))
+
+function validateDate(date) {
+  if (new Date(date)) return true;
+  return false;
+}
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 var userSchema = mongoose.Schema({
-  username: String,
+  username: { type:String, unique: true },
   exercises: [{
-    exercise: {
-      description: String,
-      duration: Number,
-      date: Date,
+      description: { type: String, required: true },
+      duration: { type: Number, required: true },
+      date: { type: Date, validate: validateDate }
     }
-  }]
+  ]
 });
 
 var userModel = mongoose.model('user',userSchema);
 
 app.post('/api/exercise/new-user', function(req,res) {
   var p = userModel.create({username: req.body.username},(err,doc) => {
-    res.send({doc});
+    res.send({ _id: doc._id, username: doc.username});
     console.log(doc);
   });
 });
@@ -48,7 +52,7 @@ app.post('/api/exercise/add', function(req,res) {
   }
   }, {new: true},
     (err, user) => {
-    console.log(user,'user');
+    console.log(JSON.stringify(user),'user');
     
   });
   
