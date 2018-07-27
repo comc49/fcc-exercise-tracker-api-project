@@ -67,7 +67,8 @@ app.post('/api/exercise/add', function(req,res) {
 ///api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', function(req,res) {
   console.log(req.query);
-  let queryBuilder = userModel.findById(req.query.userId).where('exercises.1.description');
+  //let queryBuilder = userModel.findById(req.query.userId).where('exercises.1.description');
+  let queryBuilder = userModel.find({'exercises.duration': {$lte:40}});
  
   
 //     queryBuilder = queryBuilder.where('exercises').elemMatch(function(elem) {
@@ -89,7 +90,7 @@ app.get('/api/exercise/log', function(req,res) {
   queryBuilder.exec((err,doc) => {
     if (err) console.log(err);
     if(!doc) console.log("DOC I NULL");
-    console.log("HELLO???");
+    console.log(doc,"HELLO???");
     res.send(doc);
   });
 });
