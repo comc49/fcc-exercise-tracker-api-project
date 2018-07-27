@@ -72,7 +72,7 @@ app.get('/api/exercise/log', function(req,res) {
   
   if (req.query.test) {
     console.log("INSIDE TEST");
-    queryBuilder = queryBuilder.where('exercises').where('test');
+    queryBuilder = queryBuilder.where('exercises').in(['test']);
   }  
 //   if (req.query.from) {
 //     queryBuilder = queryBuilder.where('exercises.date').gte(new Date(req.query.from));
