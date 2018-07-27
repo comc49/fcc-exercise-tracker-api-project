@@ -67,13 +67,15 @@ app.post('/api/exercise/add', function(req,res) {
 ///api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', function(req,res) {
   console.log(req.query);
-  let queryBuilder = userModel.findById(req.query.userId);
+  let queryBuilder = userModel.findById(req.query.userId).where('exercises.1.description');
  
   
-  if (req.query.test) {
-    console.log("INSIDE TEST");
-    queryBuilder = queryBuilder.where('exercises').in(['test']);
-  }  
+//     queryBuilder = queryBuilder.where('exercises').elemMatch(function(elem) {
+//       elem.where({duration: 30});
+//     });
+     //queryBuilder = queryBuilder.where('exercises.duration').equals(30);
+  
+  
 //   if (req.query.from) {
 //     queryBuilder = queryBuilder.where('exercises.date').gte(new Date(req.query.from));
 //   }
