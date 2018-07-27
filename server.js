@@ -67,6 +67,15 @@ app.post('/api/exercise/add', function(req,res) {
 ///api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', function(req,res) {
   
+  let queryBuilder = userModel.findById(req.params.userId);
+  if (req.params.from) {
+    queryBuilder = queryBuilder
+  }
+  
+  userModel.find({
+    
+  })
+  
 });
 
 // Not found middleware
