@@ -69,7 +69,11 @@ app.get('/api/exercise/log', function(req,res) {
   console.log(req.query);
   let queryBuilder = userModel.findById(req.query.userId);
   if (req.query.from) {
-    queryBuilder = queryBuilder.where('date').gte(new Date(req.query.from));
+    queryBuilder = queryBuilder.where('exercises.date').gte(new Date(req.query.from));
+  }
+  
+  if (req.query.test) {
+    queryBuilder = queryBuilder.where('this.exercises.test').gte('5');
   }
   
   if (req.query.to) {
